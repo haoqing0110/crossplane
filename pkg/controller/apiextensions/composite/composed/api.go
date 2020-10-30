@@ -67,6 +67,9 @@ func (*DefaultConfigurator) Configure(cp resource.Composite, cd resource.Compose
 	// store it here so that we can reset it after unmarshalling.
 	name := cd.GetName()
 	namespace := cd.GetNamespace()
+	if namespace == "" {
+		namespace = cp.GetLabels()[LabelKeyClaimNamespace]
+	}
 	if err := json.Unmarshal(t.Base.Raw, cd); err != nil {
 		return errors.Wrap(err, errUnmarshal)
 	}
